@@ -92,7 +92,7 @@ def get_clicked_pos(pos, width, margin):
 
 def clicked(grid, row, col, piece):
     if grid[row][col].get_piece() is None:
-        grid[row][col].set_piece()
+        grid[row][col].set_piece(piece)
 
 
 def main(window, dimension):
@@ -118,17 +118,27 @@ def main(window, dimension):
             #     random_move(grid, piece)
             #     turn = not turn
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
+            if not check_win(grid):
 
-                if event.button == 1:
-                    if area.collidepoint(event.pos):
-                        row, col = get_clicked_pos(pos, width, margin)
-                        clicked(grid, row, col, piece)
-                        turn = not turn
+                if not turn:
+                    random_move(grid, piece)
+                    turn = not turn
 
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
 
-            pygame.time.delay(200)
+                    if event.button == 1:
+                        if area.collidepoint(event.pos):
+                            row, col = get_clicked_pos(pos, width, margin)
+                            # print(row, col)
+                            clicked(grid, row, col, piece)
+                            turn = not turn
+            else:
+                print('win')
+
+            
+
+            # pygame.time.delay(200)
 
             draw_grid(width, dimension, margin, grid, window, turn)
             if event.type == pygame.QUIT:
