@@ -1,10 +1,19 @@
 import pygame
+
+
+from helpers import check_win
+from helpers import generate_possible_moves
+
 from random_move import random_move
+from minimax import gen_best_move
 
 from obj import Obj
+
 pygame.init()
 window = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Tic Tac Toe")
+
+player, opponent = 'X', 'O'
 
 dimension = 3
 
@@ -48,51 +57,22 @@ def draw_grid(width, dim, margin, grid, win, turn):
                 win.blit(image, rect)
 
 
-def check_row(grid):
-    n = 3
-    for row in range(n):
-        if grid[row][0].get_piece() is not None or grid[row][1].get_piece() is not None or grid[row][2].get_piece() is not None: 
-            if grid[row][0].get_piece() == grid[row][1].get_piece() == grid[row][2].get_piece():
-                return True
-    return False
 
-
-def check_col(grid):
-    n = 3
-    for col in range(n):
-        if grid[0][col].get_piece() is not None or grid[1][col].get_piece() is not None or grid[2][col].get_piece() is not None: 
-            if grid[0][col].get_piece() == grid[1][col].get_piece() == grid[2][col].get_piece():
-                return True
-    return False
-
-def check_diagonal(grid):
-    n = 3
-
-    if grid[1][1].get_piece() is not None:
-        if grid[0][0].get_piece() == grid[1][1].get_piece() == grid[2][2].get_piece():
-            return True
-        elif grid[0][2].get_piece() == grid[1][1].get_piece() == grid[0][2].get_piece():
-            return True
-    return False
-
-def check_win(grid):
-    # print(check_col(grid) or check_row(grid) or check_diagonal(grid))
-    print('row', check_row(grid))
-    print('col', check_col(grid))
-    print('diagonal', check_diagonal(grid))
-    return check_col(grid) or check_row(grid) or check_diagonal(grid)
 
 
 def get_clicked_pos(pos, width, margin):
-  row = pos[1] // (width + margin)
-  col= pos[0] // (width+margin)
+    row = pos[1] // (width + margin)
+    col= pos[0] // (width+margin)
 
-  return row, col
+    return row, col
 
 
 def clicked(grid, row, col, piece):
     if grid[row][col].get_piece() is None:
         grid[row][col].set_piece(piece)
+
+
+
 
 
 def main(window, dimension):
@@ -108,20 +88,16 @@ def main(window, dimension):
     # grid[0][2].set_piece('X')
     while run:
         for event in pygame.event.get():
-            piece = 'X' if turn else 'O'    
+            piece = player if turn else opponent    
             window.fill(WHITE)
             pygame.draw.rect(window, BLACK, area)
-
-            # if check_win(grid):
-            #     print('win')
-            # else:
-            #     random_move(grid, piece)
-            #     turn = not turn
-
-            if not check_win(grid):
+            
+            if not check_win(grid) and generate_possible_moves(grid):
 
                 if not turn:
-                    random_move(grid, piece)
+                    # random_move(grid, piece)
+                    x, y = gen_best_move(grid)
+                    grid[x][y].set_piece(piece)
                     turn = not turn
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -133,13 +109,14 @@ def main(window, dimension):
                             # print(row, col)
                             clicked(grid, row, col, piece)
                             turn = not turn
+
+            elif check_win(grid):
+                piece = 'X' if not turn else 'O'
+                print(piece, 'win')
+
             else:
-                print('win')
-
-            
-
-            # pygame.time.delay(200)
-
+                print('draw')
+                
             draw_grid(width, dimension, margin, grid, window, turn)
             if event.type == pygame.QUIT:
                 run = False

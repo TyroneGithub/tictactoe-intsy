@@ -1,18 +1,7 @@
 import random
 from datetime import datetime
+from helpers import generate_possible_moves
 
-
-def generate_possible_moves(grid):
-    
-    n = 3
-    possible_moves = []
-
-    for i in range(n):
-        for j in range(n):
-            if grid[i][j].get_piece() is None:
-                possible_moves.append([i, j])
-    
-    return possible_moves
 
 def random_move(grid, piece):
     possible_moves = generate_possible_moves(grid)
