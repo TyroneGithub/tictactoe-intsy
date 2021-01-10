@@ -6,3 +6,6 @@ class Obj:
     
     def get_piece(self):
         return self.piece
+    
+    def set_piece(self, piece):
+        self.piece = piece
