@@ -13,6 +13,7 @@ def minimax(grid, depth, is_max):
         return score
 
     if not generate_possible_moves(grid):
+        print('no moves', depth)
         return 0
 
     if is_max:
@@ -22,7 +23,8 @@ def minimax(grid, depth, is_max):
             for col in range(n):
                 if grid[row][col].get_piece() is None:
                     grid[row][col].set_piece(player)
-                    best = max(best, minimax(grid, depth + 1, False))
+                    score = minimax(grid, depth + 1, False)
+                    best = max(best, score)
                     grid[row][col].set_piece(None)
 
         return best
@@ -33,7 +35,8 @@ def minimax(grid, depth, is_max):
             for col in range(n):
                 if grid[row][col].get_piece() is None:
                     grid[row][col].set_piece(opponent)
-                    best = min(best, minimax(grid, depth + 1, True))
+                    score = minimax(grid, depth + 1, True)
+                    best = min(best, score)
                     grid[row][col].set_piece(None)
 
         return best
@@ -41,7 +44,7 @@ def minimax(grid, depth, is_max):
 
 def gen_best_move(grid):
     best = -1000
-    best_move = [-1, -1]
+    best_move = [-100, -100]
     n = 3
     for row in range(n):
         for col in range(n):

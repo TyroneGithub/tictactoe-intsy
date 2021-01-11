@@ -95,9 +95,9 @@ def main(window, dimension):
             if not check_win(grid) and generate_possible_moves(grid):
 
                 if not turn:
-                    # random_move(grid, piece)
-                    x, y = gen_best_move(grid)
-                    grid[x][y].set_piece(piece)
+                    random_move(grid, piece)
+                    # x, y = gen_best_move(grid)
+                    # grid[x][y].set_piece(piece)
                     turn = not turn
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -112,10 +112,11 @@ def main(window, dimension):
 
             elif check_win(grid):
                 piece = 'X' if not turn else 'O'
-                print(piece, 'win')
+                # print(piece, 'win')
 
             else:
-                print('draw')
+                pass
+                # print('draw')
                 
             draw_grid(width, dimension, margin, grid, window, turn)
             if event.type == pygame.QUIT:
