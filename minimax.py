@@ -20,9 +20,9 @@ def minimax(grid, depth, is_max):
 
         for row in range(n):
             for col in range(n):
-                if grid[row][col].get_piece is None:
+                if grid[row][col].get_piece() is None:
                     grid[row][col].set_piece(player)
-                    best = max(best, minimax(grid, depth + 1, not is_max))
+                    best = max(best, minimax(grid, depth + 1, False))
                     grid[row][col].set_piece(None)
 
         return best
@@ -31,9 +31,9 @@ def minimax(grid, depth, is_max):
         best = 1000 
         for row in range(n):
             for col in range(n):
-                if grid[row][col].get_piece is None:
+                if grid[row][col].get_piece() is None:
                     grid[row][col].set_piece(opponent)
-                    best = min(best, minimax(grid, depth + 1, not is_max))
+                    best = min(best, minimax(grid, depth + 1, True))
                     grid[row][col].set_piece(None)
 
         return best
