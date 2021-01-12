@@ -60,5 +60,3 @@ def gen_best_move(grid):
                     best = move
     
     return best_move
-
-

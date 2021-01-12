@@ -1,11 +1,11 @@
 import pygame
 
-
 from helpers import check_win
 from helpers import generate_possible_moves
 
 from random_move import random_move
 from minimax import gen_best_move
+from level1 import levelOneMove
 
 from obj import Obj
 
@@ -17,34 +17,35 @@ player, opponent = 'X', 'O'
 
 dimension = 3
 
-
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-
 def get_clicked_pos(pos, width, margin):
   row = pos[1] // (width + margin)
-  col= pos[0] // (width+margin)
+  col = pos[0] // (width + margin)
 
   return row, col
 
 def init_grid(dimension):
     grid = []
+
     for row in range(dimension):
         grid.append([])
+
         for col in range(dimension):
             piece = Obj(row, col)
             grid[row].append(piece)
+
     return grid
 
 def draw_grid(width, dim, margin, grid, win, turn):
-
     for row in range(dim):
         for col in range(dim):
             # color = grid[row][col].get_color()
             image = None
             rect = pygame.draw.rect(win, WHITE, [(margin + width) * col + margin,
                     (margin + width) * row + margin,width,width])
+
             if grid[row][col].get_piece() is not None:
                 if grid[row][col].get_piece() == 'X':
                     image = pygame.image.load('images/x.png').convert()
@@ -56,24 +57,15 @@ def draw_grid(width, dim, margin, grid, win, turn):
                         (margin*2 + width)))
                 win.blit(image, rect)
 
-
-
-
-
 def get_clicked_pos(pos, width, margin):
     row = pos[1] // (width + margin)
-    col= pos[0] // (width+margin)
+    col = pos[0] // (width + margin)
 
     return row, col
-
 
 def clicked(grid, row, col, piece):
     if grid[row][col].get_piece() is None:
         grid[row][col].set_piece(piece)
-
-
-
-
 
 def main(window, dimension):
     grid = init_grid(dimension)
@@ -93,11 +85,11 @@ def main(window, dimension):
             pygame.draw.rect(window, BLACK, area)
             
             if not check_win(grid) and generate_possible_moves(grid):
-
                 if not turn:
-                    random_move(grid, piece)
-                    # x, y = gen_best_move(grid)
-                    # grid[x][y].set_piece(piece)
+                    # random_move(grid, piece)
+                    # levelOneMove(grid, piece)
+                    x, y = gen_best_move(grid)
+                    grid[x][y].set_piece(piece)
                     turn = not turn
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -119,9 +111,12 @@ def main(window, dimension):
                 # print('draw')
                 
             draw_grid(width, dimension, margin, grid, window, turn)
+
             if event.type == pygame.QUIT:
                 run = False
+
             pygame.display.flip()
 
     pygame.quit()
+
 main(window, dimension)
