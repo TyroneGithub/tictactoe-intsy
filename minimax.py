@@ -42,7 +42,7 @@ def minimax(grid, depth, is_max):
         return best
 
 
-def gen_best_move(grid):
+def gen_best_move(grid, piece):
     best = -1000
     best_move = [-100, -100]
     n = 3
@@ -58,5 +58,6 @@ def gen_best_move(grid):
                 if move > best:
                     best_move = [row, col]
                     best = move
-    
-    return best_move
+    row, col = best_move
+    grid[row][col].set_piece(piece)
+    # return best_move
