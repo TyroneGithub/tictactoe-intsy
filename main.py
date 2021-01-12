@@ -56,8 +56,8 @@ def draw_grid(width, dim, margin, grid, win, turn):
                     image = pygame.image.load('images/O.png').convert()
 
             if image is not None:
-                image = pygame.transform.scale(image, ((margin*2 + width),
-                        (margin*2 + width)))
+                image = pygame.transform.scale(image, ((width),
+                        (width)))
                 win.blit(image, rect)
 
 def get_clicked_pos(pos, width, margin):
@@ -74,13 +74,13 @@ def main(window, dimension):
     grid = init_grid(dimension)
     area_w = 800
     width = area_w // (dimension * 2)
-    margin = 2
+    margin = 5
     turn = True
     run = True
     area = pygame.Rect(0, 0, (margin + width) * dimension + margin, (margin + width) * dimension + margin)
     font = pygame.font.SysFont('Arial', 18)
     ai_level = None
-    
+
     texts = ['Level 0: Random', 'Level 1: Hardcoded', 'Level 2: Game Tree']
     text, rect = GUI.text_list_setup(texts, font, [WHITE, WHITE, WHITE], 555, 250)
     reset, reset_rect = GUI.text_setup('Reset', font, 555, 200, WHITE)
