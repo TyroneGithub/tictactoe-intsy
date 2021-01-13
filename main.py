@@ -66,9 +66,11 @@ def get_clicked_pos(pos, width, margin):
 
     return row, col
 
-def clicked(grid, row, col, piece):
+def clicked(grid, row, col, piece, turn):
     if grid[row][col].get_piece() is None:
         grid[row][col].set_piece(piece)
+        turn = not turn
+    return turn
 
 def main(window, dimension):
     grid = init_grid(dimension)
@@ -118,15 +120,11 @@ def main(window, dimension):
             GUI.render_text([reset], [reset_rect], window)
             GUI.render_text(text, rect, window)
             GUI.render_text([status], [status_rect], window)
-
+            # print(check_win(grid))
             if ai_level is not None:
                 if not check_win(grid) and generate_possible_moves(grid):
                     if not turn:
                         ai_level(grid, piece)
-                        # random_move(grid, piece)
-                        # levelOneMove(grid, piece)
-                        # x, y = gen_best_move(grid, piece)
-                        # grid[x][y].set_piece(piece)
                         turn = not turn
 
                     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -136,8 +134,8 @@ def main(window, dimension):
                             if area.collidepoint(event.pos):
                                 row, col = get_clicked_pos(pos, width, margin)
                                 # print(row, col)
-                                clicked(grid, row, col, piece)
-                                turn = not turn
+                                turn = clicked(grid, row, col, piece, turn)
+                                # turn = not turn
 
                 elif check_win(grid):
                     piece = 'X' if not turn else 'O'
