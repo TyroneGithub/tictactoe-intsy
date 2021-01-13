@@ -140,11 +140,13 @@ def main(window, dimension):
                 elif check_win(grid):
                     piece = 'X' if not turn else 'O'
                     ai_level = None
-                    print(piece, 'win')
+                    # print(piece, 'win')
+                    game_status = piece + ' Wins'
 
                 else:
                     ai_level = None
-                    print('draw')
+                    game_status = 'draw'
+                    # print('draw')
             # else:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
