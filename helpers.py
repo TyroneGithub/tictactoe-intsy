@@ -11,18 +11,16 @@ def state_check(grid):
             if grid[row][col].get_piece() is None:
                 grid[row][col].set_piece(player)
 
-                if check_win(grid) == 69:
+                if check_win(grid) == 10:
                     winning_moves_player.append([row, col])
 
                 grid[row][col].set_piece(None)
                 grid[row][col].set_piece(opponent)
 
-                if check_win(grid) == -69:
+                if check_win(grid) == -10:
                     winning_moves_ai.append([row, col])
 
                 grid[row][col].set_piece(None)
-
-    # print(winning_moves_player, winning_moves_ai)
 
     return winning_moves_player, winning_moves_ai
 
