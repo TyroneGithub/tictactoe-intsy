@@ -22,14 +22,11 @@ def random_move(grid, piece):
         moves_player, moves_ai = state_check(grid)
 
         if move in possible_moves:
-            # print(move, 'asdf')
 
-            # if moves_player:
-            #     # print(moves_player, 'haha')
-            #     row, col = moves_player[0]
+            if moves_player:
+                row, col = moves_player[0]
             
             if moves_ai:
-                # print(moves_ai, 'hehe')
                 row, col = moves_ai[0]
             
             grid[row][col].set_piece(piece)
