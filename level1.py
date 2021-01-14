@@ -2,11 +2,10 @@ from helpers import generate_possible_moves
 from helpers import check_win
 from helpers import state_check
 
-player, opponent = 'X', 'O'
 
-def level_one(grid, piece):
+def level_one(grid, piece, is_ai):
     possible_moves = generate_possible_moves(grid)
-    moves_player, moves_ai = state_check(grid)
+    moves_player, moves_ai = state_check(grid, is_ai)
     corners = [[0, 0], [0, 2], [2, 0], [2, 2]]
     rest = [[0, 1], [1, 0], [1, 2], [2, 1]]
 

@@ -1,9 +1,9 @@
 from helpers import check_win
 from helpers import generate_possible_moves
-player, opponent = 'X', 'O'
 
-def minimax(grid, depth, is_max):
-    score = check_win(grid)
+
+def minimax(grid, depth, is_max, player, opponent, is_ai):
+    score = check_win(grid, is_ai)
     n = 3
     if score == 10:
         return score - depth
@@ -40,17 +40,23 @@ def minimax(grid, depth, is_max):
         return best
 
 
-def gen_best_move(grid, piece):
+def gen_best_move(grid, piece, is_ai):
     best = -1000
     best_move = [-100, -100]
     n = 3
+    player = 'X' if not is_ai else 'O'
+    opponent = 'O' if not is_ai else 'X'
+    # p = player if not is_ai else opponent
+
+    #
+
     for row in range(n):
         for col in range(n):
 
             if grid[row][col].get_piece() is None:
                 
                 grid[row][col].set_piece(player)
-                move = minimax(grid, 0, False)
+                move = minimax(grid, 0, False, player, opponent, is_ai)
                 grid[row][col].set_piece(None)
 
                 if move > best:

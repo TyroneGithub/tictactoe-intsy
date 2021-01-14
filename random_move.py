@@ -6,7 +6,7 @@ from helpers import state_check
 
 player, opponent = 'X', 'O'
 
-def random_move(grid, piece):
+def random_move(grid, piece, is_ai):
     possible_moves = generate_possible_moves(grid)
     moved = False
 
@@ -19,7 +19,7 @@ def random_move(grid, piece):
         
         move = [row, col]
 
-        moves_player, moves_ai = state_check(grid)
+        moves_player, moves_ai = state_check(grid, is_ai)
 
         if move in possible_moves:
 

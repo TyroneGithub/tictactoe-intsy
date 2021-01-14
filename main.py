@@ -72,12 +72,12 @@ def clicked(grid, row, col, piece, turn):
         turn = not turn
     return turn
 
-def main(window, dimension):
+def main(window, dimension, is_ai):
     grid = init_grid(dimension)
     area_w = 800
     width = area_w // (dimension * 2)
     margin = 5
-    turn = True
+    turn = True if not is_ai else False
     run = True
     area = pygame.Rect(0, 0, (margin + width) * dimension + margin, (margin + width) * dimension + margin)
     font = pygame.font.SysFont('Arial', 18)
@@ -95,8 +95,11 @@ def main(window, dimension):
         for event in pygame.event.get():
             window.fill(WHITE)
             pygame.draw.rect(window, BLACK, area)
-            piece = player if turn else opponent    
-            
+            if is_ai:
+                piece = player if not turn else opponent    
+            else:
+                piece = player if turn else opponent    
+
             rect[0].width = 180
             rect[0].height = 35
             rect[0].center = (515, 50)
@@ -122,9 +125,9 @@ def main(window, dimension):
             GUI.render_text([status], [status_rect], window)
             # print(check_win(grid))
             if ai_level is not None:
-                if not check_win(grid) and generate_possible_moves(grid):
+                if not check_win(grid, is_ai) and generate_possible_moves(grid):
                     if not turn:
-                        ai_level(grid, piece)
+                        ai_level(grid, piece, is_ai)
                         turn = not turn
 
                     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -137,17 +140,19 @@ def main(window, dimension):
                                 turn = clicked(grid, row, col, piece, turn)
                                 # turn = not turn
 
-                elif check_win(grid):
-                    piece = 'X' if not turn else 'O'
+                elif check_win(grid, is_ai):
+                    if is_ai:
+                        piece = player if  turn else opponent    
+                    else:
+                        piece = player if not turn else opponent    
+                        
                     ai_level = None
-                    # print(piece, 'win')
                     game_status = piece + ' Wins'
 
                 else:
                     ai_level = None
                     game_status = 'draw'
-                    # print('draw')
-            # else:
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
 
@@ -164,7 +169,7 @@ def main(window, dimension):
                     game_status = 'Minimax'
 
                 if reset_rect.collidepoint(pos):
-                    main(window, dimension)
+                    main(window, dimension, not is_ai)
                     return
                 
             draw_grid(width, dimension, margin, grid, window, turn)
@@ -176,4 +181,4 @@ def main(window, dimension):
 
     pygame.quit()
 
-main(window, dimension)
+main(window, dimension, False)

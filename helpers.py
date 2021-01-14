@@ -1,8 +1,9 @@
-player, opponent = 'X', 'O'
+# player, opponent = 'X', 'O'
 
-def state_check(grid):
+def state_check(grid, is_ai):
     n = 3
-
+    player = 'X' if not is_ai else 'O'
+    opponent = 'O' if not is_ai else 'X'
     winning_moves_ai = []
     winning_moves_player = []
 
@@ -11,13 +12,13 @@ def state_check(grid):
             if grid[row][col].get_piece() is None:
                 grid[row][col].set_piece(player)
 
-                if check_win(grid) == 10:
+                if check_win(grid, is_ai) == 10:
                     winning_moves_player.append([row, col])
 
                 grid[row][col].set_piece(None)
                 grid[row][col].set_piece(opponent)
 
-                if check_win(grid) == -10:
+                if check_win(grid, is_ai) == -10:
                     winning_moves_ai.append([row, col])
 
                 grid[row][col].set_piece(None)
@@ -35,7 +36,9 @@ def generate_possible_moves(grid):
     
     return possible_moves
 
-def check_win(grid):
+def check_win(grid, is_ai):
+    player = 'X' if not is_ai else 'O'
+    opponent = 'O' if not is_ai else 'X'
     for row in range(3):
         if grid[row][0].get_piece() == grid[row][1].get_piece() and grid[row][1].get_piece() == grid[row][2].get_piece():
             if grid[row][0].get_piece() == player:
